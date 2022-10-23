@@ -87,7 +87,7 @@ router.post('/', async (req, res) => {
   let result = ValidateCar(req.body)
   
   if (result.error) {
-    res.status(400).json(result.error);
+    res.status(412).json(result.error);
     return;
   }
 
