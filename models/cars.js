@@ -7,7 +7,7 @@ const driverSchema = new mongoose.Schema({
 
 const carSchema = new mongoose.Schema({
     car_model: String,
-    driver: driverSchema,
+    driver_name: driverSchema,
     location: String,
     plate_id: String,
     status: String,
@@ -23,7 +23,7 @@ function ValidateCar(car)
 
   const carJoiSchema = Joi.object({
     car_model: Joi.string().min(3).required(),
-    driver: driverJoiSchema,
+    driver_name: driverJoiSchema,
     location: Joi.string(),
     plate_id: Joi.string(),
     status: Joi.string(),

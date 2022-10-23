@@ -8,18 +8,13 @@ const {Car, ValidateCar} = require('../models/cars');
 router.get('/', async (req, res) => {
   
       //Worksheet 5 Filtering functionality
-      const { car_model, driver, location, plateid, status, pagesize } = req.query;
+      const { car_model, location, plateid, status, limit, pagesize } = req.query;
 
       let filter = {};
 
       if(car_model)
       {
         filter.car_model = {$regex: `${car_model}`, $options: `i`}
-      }
-
-      if(driver)
-      {
-        filter.driver_name = driver
       }
 
       if(location)
@@ -44,15 +39,23 @@ router.get('/', async (req, res) => {
         pageSizeNumber = 0;
       }
 
-    
+      let limitNumber = parseInt(limit);
+
+      if(isNaN(limitNumber))
+      {
+        limitNumber = 0;
+      }
+
       //Print a table of the filtered results. 
       console.table(filter);
 
       //Get list of cars
       const cars = await Car.
                           find(filter).
+                          limit(pageSizeNumber).
                           sort({plate_id: 1, status : -1}).
-                          select('car_model driver_name location plateid status');
+                          skip(limit, pageSizeNumber).
+                          select('car_model driver location plateid status');
       res.json(cars);
       //end of testing
 })
